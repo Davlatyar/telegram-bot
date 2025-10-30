@@ -8,7 +8,13 @@ bot.on("message", function(msg){
     const chatId = msg.chat.id;
     const text = msg.text;
 
-    bot.sendMessage(chatId, `Salom --> ${text}`);
+    // bot.sendMessage(chatId, `Salom --> ${text}`);
+    if(text === "/start") {
+        bot.sendMessage(
+            chatId,
+            "Assalomu Aleykum Davlatyorni telegram botiga hush kelibsiz"
+        )
+    }
     console.log("Xabar keldi");
     console.log(msg);    
 })
