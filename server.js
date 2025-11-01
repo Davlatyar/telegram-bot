@@ -4,43 +4,108 @@ const TOKEN = "8279320933:AAFh8UHkrn6HwKUBWOBg2HWx0WsmZr4OWlA"
 
 const bot = new TelegramBot(TOKEN, { polling: true })
 
-bot.setMyCommands([
-    {
-        command: "/start",
-        description: "Bot haqida ma'lumot"
-    },
-    {
-        command: "info",
-        description: "Ozingiz haqida malumot"
+const obj = {}
+
+const gameOptions = {
+    reply_markup: {
+        inline_keyboard: [
+            [
+                {
+                    text: "1",
+                    callback_data: "1",
+                },
+                {
+                    text: "2",
+                    callback_data: "2",
+                },
+                {
+                    text: "3",
+                    callback_data: "3",
+                },
+            ],
+             [
+                {
+                    text: "4",
+                    callback_data: "4",
+                },
+                {
+                    text: "5",
+                    callback_data: "5",
+                },
+                {
+                    text: "5",
+                    callback_data: "5",
+                },
+            ],
+            [
+                {
+                    text: "0",
+                    callback_data: "0",
+                },
+                
+            ]
+        ]
     }
-])
+}
 
+const bootstrap = () => {
+    bot.setMyCommands([
+        {
+            command: "/start",
+            description: "Bot haqida ma'lumot"
+        },
+        {
+            command: "info",
+            description: "Ozingiz haqida malumot"
+        },
+        {
+            command: "/game",
+            description: "O'yin o'ynash"
+        }
+    ])
 
-bot.on("message", function(msg){
-    const chatId = msg.chat.id;
-    const text = msg.text;
-  
-  
-    if(text === "/start") {
-        return bot.sendMessage(
-            chatId, 
-            `Assalomu aleykum ${msg.from?.first_name}`
-        )
-    }
-
-    if(text === "/info") {
-        bot.sendPhoto(
+    bot.on("message", function(msg){
+        const chatId = msg.chat.id;
+        const text = msg.text;
+      
+      
+        if(text === "/start") {
+            return bot.sendMessage(
+                chatId, 
+                `Assalomu aleykum ${msg.from?.first_name}`
+            )
+        }
+    
+        if(text === "/info") {
+            bot.sendPhoto(
+                chatId,
+                "https://images.unsplash.com/photo-1497316730643-415fac54a2af?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDEwfHx8ZW58MHx8fHx8"
+            )
+            return bot.sendMessage(
+                chatId,
+                `Sizning telegram username ${msg.from?.username}`
+            )
+        }
+        if (text === "/game") {
+            return bot.sendMessage(
+                chatId,
+                "Birdan 1 dan 10 gacha sonni toping",
+                gameOptions
+            );
+            const randomNumber = Math.floor(Math.random() * 10);
+            obj[chatId] = randomNumber;
+          }
+          
+    
+        // console.log("Xabar keldi");
+        // console.log(msg);    
+    
+        bot.sendMessage(
             chatId,
-            "https://images.unsplash.com/photo-1497316730643-415fac54a2af?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDEwfHx8ZW58MHx8fHx8"
+            "Uzur men sizning gapingizga tushunmadim"
         )
-        return bot.sendMessage(
-            chatId,
-            `Sizning telegram username ${msg.from?.username}`
-        )
-    }
+    })
+}
 
-    console.log("Xabar keldi");
-    console.log(msg);    
-})
-
+bootstrap()
 console.log("Botimiz ishga tushdi");
