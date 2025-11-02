@@ -23,7 +23,7 @@ const gameOptions = {
                     callback_data: "3",
                 },
             ],
-             [
+            [
                 {
                     text: "4",
                     callback_data: "4",
@@ -33,8 +33,23 @@ const gameOptions = {
                     callback_data: "5",
                 },
                 {
-                    text: "5",
-                    callback_data: "5",
+                    text: "6",
+                    callback_data: "6",
+                },
+            ],
+            [
+                
+                {
+                    text: "7",
+                    callback_data: "7",
+                },
+                {
+                    text: "8",
+                    callback_data: "8",
+                },
+                {
+                    text: "9",
+                    callback_data: "9",
                 },
             ],
             [
@@ -44,6 +59,7 @@ const gameOptions = {
                 },
                 
             ]
+
         ]
     }
 }
@@ -64,6 +80,8 @@ const bootstrap = () => {
         }
     ])
 
+
+    
     bot.on("message", function(msg){
         const chatId = msg.chat.id;
         const text = msg.text;
@@ -87,25 +105,38 @@ const bootstrap = () => {
             )
         }
         if (text === "/game") {
-            return bot.sendMessage(
+           bot.sendMessage(
                 chatId,
                 "Birdan 1 dan 10 gacha sonni toping",
                 gameOptions
             );
-            const randomNumber = Math.floor(Math.random() * 10);
+            const randomNumber =  Math.floor(Math.random() * 10);
             obj[chatId] = randomNumber;
+            return randomNumber
+            // console.log(randomNumber);
           }
           
-    
-        // console.log("Xabar keldi");
-        // console.log(msg);    
-    
-        bot.sendMessage(
+
+        return bot.sendMessage(
             chatId,
             "Uzur men sizning gapingizga tushunmadim"
         )
     })
 }
+    bot.on("callback_query", msg => {
+     const data = msg.data;
+     const chatId = msg.message.chat.id;
+
+     if(data == obj[chatId]) {
+         return bot.sendMessage(chatId,
+            `Tabriklaymiz siz togri toptingiz, javob ${obj[chatId]} edi `)
+            
+        }else{
+            return bot.sendMessage(
+                chatId, `siz ${data}ni tanladinggiz bu hato, togri javod ${obj[chatId]} edi`
+            )
+     }
+})
 
 bootstrap()
 console.log("Botimiz ishga tushdi");
