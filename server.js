@@ -82,7 +82,7 @@ const bootstrap = () => {
 
 
     
-    bot.on("message", function(msg){
+    bot.on("message", async function(msg){
         const chatId = msg.chat.id;
         const text = msg.text;
       
@@ -90,8 +90,38 @@ const bootstrap = () => {
         if(text === "/start") {
             return bot.sendMessage(
                 chatId, 
-                `Assalomu aleykum ${msg.from?.first_name}`
+                `Assalomu aleykum ${msg.from?.first_name}`,
+              {
+                reply_markup: {
+                    keyboard: [
+                        [{text: "Boshlash 🔥"}],
+                        [{text: "Menu 🍔"}],
+                        [{text: "Sozlamalar ⚙️"}],
+                    ],
+                    resize_keyboard: true
+                }
+              }  
             )
+        } else if (text == "Boshlash 🔥") {
+          const xabar = await bot.sendMessage(chatId, "1 sekund..");
+
+          setTimeout(function () {
+             bot.deleteMessage(chatId,xabar.message_id)
+             bot.sendPhoto(
+                 chatId, "./photos/bmv-m5.jpg"
+                ),
+                {
+                    reply_markup:{
+                        inline_keyboard:[
+                            [{text: "Sotip olish"}],                            
+                        ]
+                    }
+                }
+            }, 1000)
+                
+
+        }else if (text == "Menu 🍔") {
+            bot.sendMessage(chatId, "Menuga hush kelibsiz")
         }
     
         if(text === "/info") {
@@ -117,10 +147,10 @@ const bootstrap = () => {
           }
           
 
-        return bot.sendMessage(
-            chatId,
-            "Uzur men sizning gapingizga tushunmadim"
-        )
+        //  bot.sendMessage(
+        //     chatId,
+        //     "Uzur men sizning gapingizga tushunmadim"
+        // )
     })
 }
     bot.on("callback_query", msg => {
